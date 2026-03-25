@@ -488,7 +488,7 @@ export function ContactsPage() {
           <div className="text-xs font-semibold uppercase tracking-wider text-wiil-muted">Channel</div>
           <div className="text-xs font-semibold uppercase tracking-wider text-wiil-muted">Stage</div>
           <div className="text-xs font-semibold uppercase tracking-wider text-wiil-muted">Last Conversation</div>
-          <div className="text-xs font-semibold uppercase tracking-wider text-wiil-muted">Activity</div>
+          <div className="text-xs font-semibold uppercase tracking-wider text-wiil-muted">Conversations</div>
           <div />
         </div>
 
@@ -1057,14 +1057,14 @@ function ContactRow({ contact, selected, onToggle, onViewDetails, onEdit }: {
         )}
       </div>
 
-      {/* Activity */}
+      {/* Conversations */}
       <div>
-        <div className="flex items-center gap-2.5">
-          <div className="h-1.5 flex-1 rounded-full bg-wiil-accent/10">
-            <div className="h-1.5 rounded-full bg-wiil-accent transition-all" style={{ width: `${activityWidth}%` }} />
-          </div>
-          <span className="text-xs font-medium text-wiil-text-secondary tabular-nums w-4 text-right">{contact.total_conversations}</span>
-        </div>
+        <p className="text-sm font-medium text-wiil-text tabular-nums">{contact.total_conversations}</p>
+        {contact.last_contact_at ? (
+          <p className="text-xs text-wiil-muted">{timeAgo(contact.last_contact_at)}</p>
+        ) : (
+          <p className="text-xs text-wiil-muted">—</p>
+        )}
       </div>
 
       {/* Actions — context menu replaces inline buttons */}
