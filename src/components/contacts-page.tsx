@@ -9,7 +9,6 @@ import {
   Mail,
   Globe,
   MessageCircle,
-  ChevronRight,
   ChevronDown,
   MoreHorizontal,
   AlertTriangle,
@@ -19,8 +18,6 @@ import {
   Clock,
   HelpCircle,
   Moon,
-  Filter,
-  ArrowUpDown,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -228,25 +225,19 @@ function timeAgo(dateStr: string | null): string {
   return `${weeks}w ago`;
 }
 
-const STAGE_CONFIG: Record<Stage, { label: string; bg: string; text: string }> = {
-  new_lead: { label: "New Lead", bg: "bg-blue-50", text: "text-blue-600" },
-  contacted: { label: "Contacted", bg: "bg-amber-50", text: "text-amber-600" },
-  qualified: { label: "Qualified", bg: "bg-wiil-accent-light", text: "text-wiil-accent" },
-  converted: { label: "Converted", bg: "bg-wiil-success-bg", text: "text-wiil-success" },
-  lost: { label: "Lost", bg: "bg-gray-100", text: "text-gray-500" },
+const STAGE_LABELS: Record<Stage, string> = {
+  new_lead: "New Lead",
+  contacted: "Contacted",
+  qualified: "Qualified",
+  converted: "Converted",
+  lost: "Lost",
 };
 
-const CHANNEL_CONFIG: Record<Channel, { label: string; icon: React.ComponentType<{ className?: string }>; bg: string; text: string }> = {
-  phone: { label: "Phone", icon: Phone, bg: "bg-blue-50", text: "text-blue-600" },
-  web: { label: "Web", icon: Globe, bg: "bg-purple-50", text: "text-purple-600" },
-  whatsapp: { label: "WhatsApp", icon: MessageCircle, bg: "bg-green-50", text: "text-green-600" },
-  email: { label: "Email", icon: Mail, bg: "bg-orange-50", text: "text-orange-600" },
-};
-
-const TAG_COLORS: Record<string, string> = {
-  VIP: "bg-amber-400",
-  Returning: "bg-blue-400",
-  Active: "bg-green-400",
+const CHANNEL_ICONS: Record<Channel, { label: string; icon: React.ComponentType<{ className?: string }> }> = {
+  phone: { label: "Phone", icon: Phone },
+  web: { label: "Web", icon: Globe },
+  whatsapp: { label: "WhatsApp", icon: MessageCircle },
+  email: { label: "Email", icon: Mail },
 };
 
 /* ── Component ─────────────────────────────────────────── */
@@ -301,7 +292,7 @@ export function ContactsPage() {
   }).length;
 
   return (
-    <div className="mx-auto max-w-[1360px] px-6 py-6">
+    <div className="px-8 py-6">
       {/* ── Header ──────────────────────────────────── */}
       <div className="mb-6 flex items-center justify-between">
         <div>
@@ -340,21 +331,19 @@ export function ContactsPage() {
           icon={<TrendingUp className="h-4 w-4" />}
           label="Active This Week"
           value={activeThisWeek.toString()}
-          color="accent"
         />
         {needsFollowUp > 0 ? (
           <InsightCard
             icon={<Clock className="h-4 w-4" />}
             label="Needs Follow-up"
             value={needsFollowUp.toString()}
-            color="warning"
+            muted
           />
         ) : (
           <InsightCard
             icon={<UserCheck className="h-4 w-4" />}
             label="All Followed Up"
             value="0 overdue"
-            color="success"
           />
         )}
         {DUPLICATE_SUGGESTIONS.length > 0 ? (
@@ -362,47 +351,45 @@ export function ContactsPage() {
             icon={<AlertTriangle className="h-4 w-4" />}
             label="Possible Duplicates"
             value={DUPLICATE_SUGGESTIONS.length.toString()}
-            color="warning"
+            muted
           />
         ) : (
           <InsightCard
             icon={<Sparkles className="h-4 w-4" />}
             label="No Duplicates"
             value="Clean"
-            color="success"
           />
         )}
         <InsightCard
           icon={<UserPlus className="h-4 w-4" />}
           label="New This Week"
           value={newThisWeek.toString()}
-          color={newThisWeek > 0 ? "accent" : "muted"}
         />
       </div>
 
       {/* ── Duplicate banner ────────────────────────── */}
       {showDuplicateBanner && DUPLICATE_SUGGESTIONS.length > 0 && (
-        <div className="animate-fade-up-delay-1 mb-4 flex items-center justify-between rounded-2xl border border-amber-200 bg-amber-50 px-5 py-3.5">
+        <div className="animate-fade-up-delay-1 mb-4 flex items-center justify-between rounded-2xl border border-wiil-border bg-wiil-accent-light px-5 py-3.5">
           <div className="flex items-center gap-3">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-100 text-amber-600">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-wiil-accent/10 text-wiil-accent">
               <AlertTriangle className="h-4 w-4" />
             </div>
             <div>
-              <p className="text-sm font-medium text-amber-900">
+              <p className="text-sm font-medium text-wiil-text">
                 We found {DUPLICATE_SUGGESTIONS.length} possible duplicate contacts
               </p>
-              <p className="text-xs text-amber-700">
+              <p className="text-xs text-wiil-muted">
                 {DUPLICATE_SUGGESTIONS.map((d) => `${d.contact1} & ${d.contact2}`).join(", ")}
               </p>
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <button className="rounded-lg bg-amber-600 px-3.5 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-amber-700">
+            <button className="rounded-lg bg-wiil-accent px-3.5 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-wiil-accent-dark">
               Review & Merge
             </button>
             <button
               onClick={() => setShowDuplicateBanner(false)}
-              className="rounded-lg px-3 py-1.5 text-xs font-medium text-amber-700 transition-colors hover:bg-amber-100"
+              className="rounded-lg px-3 py-1.5 text-xs font-medium text-wiil-muted transition-colors hover:bg-white"
             >
               Dismiss
             </button>
@@ -412,8 +399,7 @@ export function ContactsPage() {
 
       {/* ── Filter bar ──────────────────────────────── */}
       <div className="animate-fade-up-delay-1 mb-4 flex items-center gap-3">
-        {/* Search */}
-        <div className="relative flex-1 max-w-sm">
+        <div className="relative flex-1 max-w-md">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-wiil-muted" />
           <input
             type="text"
@@ -424,38 +410,30 @@ export function ContactsPage() {
           />
         </div>
 
-        {/* Stage filter */}
-        <div className="relative">
-          <select
-            value={stageFilter}
-            onChange={(e) => setStageFilter(e.target.value)}
-            className="appearance-none rounded-xl border border-wiil-border bg-wiil-card py-2.5 pl-3 pr-8 text-sm text-wiil-text-secondary outline-none focus:border-wiil-accent"
-          >
-            <option value="all">All Stages</option>
-            <option value="new_lead">New Lead</option>
-            <option value="contacted">Contacted</option>
-            <option value="qualified">Qualified</option>
-            <option value="converted">Converted</option>
-            <option value="lost">Lost</option>
-          </select>
-          <ChevronDown className="pointer-events-none absolute right-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-wiil-muted" />
-        </div>
+        <FilterSelect
+          value={stageFilter}
+          onChange={setStageFilter}
+          options={[
+            { value: "all", label: "All Stages" },
+            { value: "new_lead", label: "New Lead" },
+            { value: "contacted", label: "Contacted" },
+            { value: "qualified", label: "Qualified" },
+            { value: "converted", label: "Converted" },
+            { value: "lost", label: "Lost" },
+          ]}
+        />
 
-        {/* Channel filter */}
-        <div className="relative">
-          <select
-            value={channelFilter}
-            onChange={(e) => setChannelFilter(e.target.value)}
-            className="appearance-none rounded-xl border border-wiil-border bg-wiil-card py-2.5 pl-3 pr-8 text-sm text-wiil-text-secondary outline-none focus:border-wiil-accent"
-          >
-            <option value="all">All Channels</option>
-            <option value="phone">Phone</option>
-            <option value="web">Web</option>
-            <option value="whatsapp">WhatsApp</option>
-            <option value="email">Email</option>
-          </select>
-          <ChevronDown className="pointer-events-none absolute right-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-wiil-muted" />
-        </div>
+        <FilterSelect
+          value={channelFilter}
+          onChange={setChannelFilter}
+          options={[
+            { value: "all", label: "All Channels" },
+            { value: "phone", label: "Phone" },
+            { value: "web", label: "Web" },
+            { value: "whatsapp", label: "WhatsApp" },
+            { value: "email", label: "Email" },
+          ]}
+        />
 
         <div className="flex-1" />
 
@@ -467,7 +445,7 @@ export function ContactsPage() {
       {/* ── Contact table ───────────────────────────── */}
       <div className="animate-fade-up-delay-2 rounded-2xl border border-wiil-border bg-wiil-card overflow-hidden">
         {/* Table header */}
-        <div className="grid grid-cols-[40px_1fr_100px_100px_1fr_120px_60px] items-center gap-4 border-b border-wiil-border px-5 py-3">
+        <div className="grid grid-cols-[40px_minmax(200px,1.2fr)_100px_100px_minmax(200px,1.5fr)_140px_80px] items-center gap-4 border-b border-wiil-border px-6 py-3">
           <div>
             <input
               type="checkbox"
@@ -522,7 +500,7 @@ export function ContactsPage() {
           <BulkButton label="Add Tags" />
           <BulkButton label="Change Stage" />
           <BulkButton label="Export" />
-          <button className="rounded-lg px-3 py-1.5 text-xs font-medium text-red-500 transition-colors hover:bg-red-50">
+          <button className="rounded-lg px-3 py-1.5 text-xs font-medium text-wiil-muted transition-colors hover:bg-gray-100 hover:text-wiil-text">
             Delete
           </button>
           <div className="h-4 w-px bg-wiil-border" />
@@ -548,34 +526,53 @@ function HeaderButton({ icon: Icon }: { icon: React.ComponentType<{ className?: 
   );
 }
 
+function FilterSelect({
+  value,
+  onChange,
+  options,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+  options: { value: string; label: string }[];
+}) {
+  return (
+    <div className="relative">
+      <select
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="appearance-none rounded-xl border border-wiil-border bg-wiil-card py-2.5 pl-3 pr-8 text-sm text-wiil-text-secondary outline-none focus:border-wiil-accent"
+      >
+        {options.map((o) => (
+          <option key={o.value} value={o.value}>
+            {o.label}
+          </option>
+        ))}
+      </select>
+      <ChevronDown className="pointer-events-none absolute right-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-wiil-muted" />
+    </div>
+  );
+}
+
 function InsightCard({
   icon,
   label,
   value,
-  color,
+  muted,
 }: {
   icon: React.ReactNode;
   label: string;
   value: string;
-  color: "accent" | "warning" | "success" | "muted";
+  muted?: boolean;
 }) {
-  const colorMap = {
-    accent: { bg: "bg-wiil-accent-light", text: "text-wiil-accent", valueTxt: "text-wiil-text" },
-    warning: { bg: "bg-wiil-pending-bg", text: "text-wiil-pending", valueTxt: "text-wiil-pending" },
-    success: { bg: "bg-wiil-success-bg", text: "text-wiil-success", valueTxt: "text-wiil-success" },
-    muted: { bg: "bg-gray-50", text: "text-wiil-muted", valueTxt: "text-wiil-text" },
-  };
-  const c = colorMap[color];
-
   return (
     <div className="rounded-2xl border border-wiil-border bg-wiil-card px-5 py-4 transition-all hover:shadow-sm cursor-pointer">
       <div className="mb-2 flex items-center gap-2">
-        <div className={`flex h-7 w-7 items-center justify-center rounded-lg ${c.bg} ${c.text}`}>
+        <div className={`flex h-7 w-7 items-center justify-center rounded-lg ${muted ? "bg-gray-50 text-wiil-muted" : "bg-wiil-accent-light text-wiil-accent"}`}>
           {icon}
         </div>
         <span className="text-xs font-medium text-wiil-muted">{label}</span>
       </div>
-      <p className={`text-2xl font-bold tracking-tight ${c.valueTxt}`}>{value}</p>
+      <p className="text-2xl font-bold tracking-tight text-wiil-text">{value}</p>
     </div>
   );
 }
@@ -589,8 +586,8 @@ function ContactRow({
   selected: boolean;
   onToggle: () => void;
 }) {
-  const stage = STAGE_CONFIG[contact.current_stage];
-  const channel = CHANNEL_CONFIG[contact.source_channel];
+  const stageLabel = STAGE_LABELS[contact.current_stage];
+  const channel = CHANNEL_ICONS[contact.source_channel];
   const ChannelIcon = channel.icon;
 
   const isRecentlyActive = contact.last_contact_at
@@ -599,10 +596,19 @@ function ContactRow({
 
   const activityWidth = Math.max(contact.activity_score, 4);
 
+  // Stage uses opacity levels of teal instead of different colors
+  const stageOpacity: Record<Stage, string> = {
+    new_lead: "bg-wiil-accent/10 text-wiil-accent",
+    contacted: "bg-wiil-accent/15 text-wiil-accent",
+    qualified: "bg-wiil-accent/20 text-wiil-accent-dark",
+    converted: "bg-wiil-accent/30 text-wiil-accent-dark",
+    lost: "bg-gray-100 text-wiil-muted",
+  };
+
   return (
     <div
-      className={`group grid grid-cols-[40px_1fr_100px_100px_1fr_120px_60px] items-center gap-4 border-b border-wiil-border px-5 py-3.5 transition-colors hover:bg-gray-50/50 ${
-        selected ? "bg-wiil-accent-light/30" : ""
+      className={`group grid grid-cols-[40px_minmax(200px,1.2fr)_100px_100px_minmax(200px,1.5fr)_140px_80px] items-center gap-4 border-b border-wiil-border px-6 py-3.5 transition-colors hover:bg-wiil-accent-light/30 ${
+        selected ? "bg-wiil-accent-light/20" : ""
       }`}
     >
       {/* Checkbox */}
@@ -618,11 +624,11 @@ function ContactRow({
       {/* Contact: avatar + name + contact method icons + tags */}
       <div className="flex items-center gap-3 min-w-0">
         <div className="relative shrink-0">
-          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gray-100 text-xs font-semibold text-wiil-text-secondary">
+          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-wiil-accent-light text-xs font-semibold text-wiil-accent">
             {getInitials(contact.name)}
           </div>
           {isRecentlyActive && (
-            <span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-white bg-wiil-success animate-pulse-dot" />
+            <span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-white bg-wiil-accent animate-pulse-dot" />
           )}
         </div>
         <div className="min-w-0">
@@ -630,7 +636,6 @@ function ContactRow({
             <span className="truncate text-sm font-medium text-wiil-accent cursor-pointer hover:underline">
               {contact.name}
             </span>
-            {/* Contact method icons */}
             {contact.phone && (
               <span title={contact.phone}>
                 <Phone className="h-3 w-3 text-wiil-muted" />
@@ -641,22 +646,13 @@ function ContactRow({
                 <Mail className="h-3 w-3 text-wiil-muted" />
               </span>
             )}
-            {/* Tag dots */}
-            {contact.tags.map((tag) => (
-              <span
-                key={tag}
-                title={tag}
-                className={`h-1.5 w-1.5 rounded-full ${TAG_COLORS[tag] || "bg-gray-400"}`}
-              />
-            ))}
           </div>
-          {/* Tags as labels on hover / when there are tags */}
           {contact.tags.length > 0 && (
-            <div className="flex gap-1 mt-0.5">
+            <div className="flex gap-1.5 mt-0.5">
               {contact.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="text-[10px] font-medium text-wiil-muted"
+                  className="rounded-full bg-wiil-accent/10 px-1.5 py-px text-[10px] font-medium text-wiil-accent"
                 >
                   {tag}
                 </span>
@@ -666,22 +662,20 @@ function ContactRow({
         </div>
       </div>
 
-      {/* Channel */}
+      {/* Channel — unified teal tone */}
       <div>
-        <span
-          className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium ${channel.bg} ${channel.text}`}
-        >
+        <span className="inline-flex items-center gap-1 rounded-full bg-wiil-accent-light px-2 py-0.5 text-[11px] font-medium text-wiil-accent">
           <ChannelIcon className="h-3 w-3" />
           {channel.label}
         </span>
       </div>
 
-      {/* Stage */}
+      {/* Stage — teal opacity scale */}
       <div>
         <span
-          className={`inline-block rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${stage.bg} ${stage.text}`}
+          className={`inline-block rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${stageOpacity[contact.current_stage]}`}
         >
-          {stage.label}
+          {stageLabel}
         </span>
       </div>
 
@@ -689,17 +683,9 @@ function ContactRow({
       <div className="min-w-0">
         {contact.last_conversation_summary ? (
           <div>
-            <div className="flex items-center gap-1.5">
-              {contact.last_conversation_sentiment === "positive" && (
-                <span className="shrink-0 text-green-500 text-xs">+</span>
-              )}
-              {contact.last_conversation_sentiment === "negative" && (
-                <span className="shrink-0 text-red-500 text-xs">-</span>
-              )}
-              <p className="truncate text-sm text-wiil-text">
-                {contact.last_conversation_summary}
-              </p>
-            </div>
+            <p className="truncate text-sm text-wiil-text">
+              {contact.last_conversation_summary}
+            </p>
             <p className="mt-0.5 text-xs text-wiil-muted">
               {timeAgo(contact.last_contact_at)}
             </p>
@@ -711,14 +697,14 @@ function ContactRow({
 
       {/* Activity */}
       <div>
-        <div className="flex items-center gap-2">
-          <div className="h-1.5 w-16 rounded-full bg-gray-100">
+        <div className="flex items-center gap-2.5">
+          <div className="h-1.5 flex-1 rounded-full bg-wiil-accent/10">
             <div
               className="h-1.5 rounded-full bg-wiil-accent transition-all"
               style={{ width: `${activityWidth}%` }}
             />
           </div>
-          <span className="text-xs font-medium text-wiil-text-secondary">
+          <span className="text-xs font-medium text-wiil-text-secondary tabular-nums w-4 text-right">
             {contact.total_conversations}
           </span>
         </div>
