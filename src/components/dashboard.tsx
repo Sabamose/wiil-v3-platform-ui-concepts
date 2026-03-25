@@ -10,17 +10,11 @@ import {
   Calendar,
   UserCheck,
   Phone,
-  Bot,
   ChevronRight,
-  Play,
-  Settings,
   Package,
-  Wrench,
   ClipboardList,
   BarChart3,
   Clock,
-  ExternalLink,
-  Plus,
 } from "lucide-react";
 
 /* ── Mock data matching screenshots ────────────────────── */
@@ -200,15 +194,6 @@ export function Dashboard() {
           {ASSISTANTS.map((assistant) => (
             <AssistantCard key={assistant.id} assistant={assistant} />
           ))}
-          {/* Create new */}
-          <button className="group flex flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-wiil-border bg-white/50 py-10 transition-all hover:border-wiil-accent hover:bg-wiil-accent-light">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-wiil-accent-light text-wiil-accent transition-colors group-hover:bg-wiil-accent group-hover:text-white">
-              <Plus className="h-5 w-5" />
-            </div>
-            <span className="text-sm font-medium text-wiil-muted group-hover:text-wiil-accent">
-              Create new assistant
-            </span>
-          </button>
         </div>
       </div>
 
@@ -220,14 +205,14 @@ export function Dashboard() {
           <div className="rounded-2xl border border-wiil-border bg-wiil-card p-5">
             <div className="mb-4 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-amber-50 text-wiil-pending">
+                <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-wiil-accent-light text-wiil-accent">
                   <ClipboardList className="h-4 w-4" />
                 </div>
                 <h3 className="text-sm font-semibold text-wiil-text">
                   Pending Orders
                 </h3>
               </div>
-              <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-wiil-pending px-1.5 text-[11px] font-bold text-white">
+              <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-wiil-accent px-1.5 text-[11px] font-bold text-white">
                 {PENDING_ORDERS.length}
               </span>
             </div>
@@ -239,11 +224,7 @@ export function Dashboard() {
                 >
                   <div className="flex items-center gap-3">
                     <div
-                      className={`flex h-8 w-8 items-center justify-center rounded-lg ${
-                        order.type === "product"
-                          ? "bg-blue-50 text-blue-500"
-                          : "bg-orange-50 text-orange-500"
-                      }`}
+                      className="flex h-8 w-8 items-center justify-center rounded-lg bg-wiil-accent-light text-wiil-accent"
                     >
                       {order.type === "product" ? (
                         <Package className="h-4 w-4" />
@@ -266,7 +247,7 @@ export function Dashboard() {
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="rounded-full bg-wiil-pending-bg px-2.5 py-0.5 text-[11px] font-semibold text-wiil-pending">
+                    <span className="rounded-full bg-wiil-accent/10 px-2.5 py-0.5 text-[11px] font-semibold text-wiil-accent">
                       pending
                     </span>
                     <ChevronRight className="h-4 w-4 text-wiil-muted opacity-0 transition-opacity group-hover:opacity-100" />
@@ -341,41 +322,11 @@ export function Dashboard() {
             </div>
           </div>
 
-          {/* Platform Services */}
+          {/* AI Containment — simple text card */}
           <div className="rounded-2xl border border-wiil-border bg-wiil-card p-5">
-            <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-wiil-muted">
-              Manage
-            </h3>
-            <div className="space-y-1">
-              <QuickLink
-                icon={<Package className="h-4 w-4" />}
-                label="Products"
-              />
-              <QuickLink
-                icon={<Wrench className="h-4 w-4" />}
-                label="Service Management"
-              />
-            </div>
-          </div>
-
-          {/* AI Performance mini card */}
-          <div className="rounded-2xl bg-gradient-to-br from-wiil-accent to-wiil-accent-dark p-5 text-white">
-            <div className="mb-1 flex items-center gap-2">
-              <Bot className="h-4 w-4 opacity-80" />
-              <span className="text-xs font-medium uppercase tracking-wider opacity-70">
-                AI Containment
-              </span>
-            </div>
-            <p className="text-3xl font-bold tracking-tight">87.3%</p>
-            <p className="mt-1 text-xs opacity-70">
-              of conversations resolved without handoff
-            </p>
-            <div className="mt-3 h-1.5 rounded-full bg-white/20">
-              <div
-                className="h-1.5 rounded-full bg-white/80"
-                style={{ width: "87.3%" }}
-              />
-            </div>
+            <p className="text-xs font-semibold uppercase tracking-wider text-wiil-muted">AI Containment</p>
+            <p className="mt-2 text-3xl font-bold tracking-tight text-wiil-text">87.3%</p>
+            <p className="mt-1 text-sm text-wiil-muted">conversations resolved without handoff</p>
           </div>
         </div>
       </div>
@@ -398,8 +349,6 @@ function StatCard({
   label,
   value,
   sub,
-  accent,
-  warning,
 }: {
   icon: React.ReactNode;
   label: string;
@@ -411,27 +360,13 @@ function StatCard({
   return (
     <div className="rounded-2xl border border-wiil-border bg-wiil-card px-5 py-4 transition-all hover:shadow-sm">
       <div className="mb-2 flex items-center gap-2">
-        <div
-          className={`flex h-7 w-7 items-center justify-center rounded-lg ${
-            warning
-              ? "bg-wiil-pending-bg text-wiil-pending"
-              : accent
-                ? "bg-wiil-accent-light text-wiil-accent"
-                : "bg-gray-50 text-wiil-muted"
-          }`}
-        >
+        <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-wiil-accent-light text-wiil-accent">
           {icon}
         </div>
         <span className="text-xs font-medium text-wiil-muted">{label}</span>
       </div>
       <div className="flex items-baseline gap-1.5">
-        <span
-          className={`text-2xl font-bold tracking-tight ${
-            warning ? "text-wiil-pending" : "text-wiil-text"
-          }`}
-        >
-          {value}
-        </span>
+        <span className="text-2xl font-bold tracking-tight text-wiil-text">{value}</span>
         <span className="text-xs text-wiil-muted">{sub}</span>
       </div>
     </div>
@@ -445,39 +380,33 @@ function AssistantCard({
 }) {
   const isLongName = assistant.name.length > 20;
   return (
-    <div className="group rounded-2xl border border-wiil-border bg-wiil-card p-5 transition-all hover:border-wiil-accent/30 hover:shadow-md">
+    <div className="group cursor-pointer rounded-2xl border border-wiil-border bg-wiil-card p-5 transition-all hover:border-wiil-accent/30 hover:shadow-sm">
       {/* Top: status + type */}
       <div className="mb-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span
             className={`h-2 w-2 rounded-full ${
               assistant.online
-                ? "bg-wiil-success animate-pulse-dot"
+                ? "bg-wiil-accent animate-pulse-dot"
                 : "bg-gray-300"
             }`}
           />
           <span
             className={`text-[11px] font-medium ${
-              assistant.online ? "text-wiil-success" : "text-wiil-muted"
+              assistant.online ? "text-wiil-accent" : "text-wiil-muted"
             }`}
           >
             {assistant.online ? "Online" : "Offline"}
           </span>
         </div>
-        <div
-          className={`flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium ${
-            assistant.type === "phone"
-              ? "bg-blue-50 text-blue-600"
-              : "bg-purple-50 text-purple-600"
-          }`}
-        >
+        <span className="flex items-center gap-1 rounded-full bg-wiil-accent-light px-2 py-0.5 text-[11px] font-medium text-wiil-accent">
           {assistant.type === "phone" ? (
             <Phone className="h-3 w-3" />
           ) : (
             <Globe className="h-3 w-3" />
           )}
           {assistant.type === "phone" ? "Phone" : "Web"}
-        </div>
+        </span>
       </div>
 
       {/* Name + role */}
@@ -487,9 +416,7 @@ function AssistantCard({
         }`}
         title={assistant.name}
       >
-        {isLongName
-          ? assistant.name.slice(0, 28) + "..."
-          : assistant.name}
+        {isLongName ? assistant.name.slice(0, 28) + "..." : assistant.name}
       </h3>
       <p className="mt-0.5 text-xs text-wiil-muted">{assistant.role}</p>
 
@@ -498,41 +425,19 @@ function AssistantCard({
         {assistant.languages.map((lang) => (
           <span
             key={lang}
-            className="rounded bg-gray-50 px-1.5 py-0.5 text-[10px] font-medium text-wiil-text-secondary"
+            className="rounded bg-wiil-accent/5 px-1.5 py-0.5 text-[10px] font-medium text-wiil-text-secondary"
           >
             {lang}
           </span>
         ))}
       </div>
 
-      {/* Stats */}
-      <div className="mt-4 flex items-center justify-between border-t border-wiil-border pt-3">
-        <div>
-          <p className="text-lg font-bold text-wiil-text">
-            {assistant.conversationsToday}
-          </p>
-          <p className="text-[11px] text-wiil-muted">conversations today</p>
-        </div>
-        {assistant.satisfactionRate && (
-          <div className="text-right">
-            <p className="text-lg font-bold text-wiil-accent">
-              {assistant.satisfactionRate}
-            </p>
-            <p className="text-[11px] text-wiil-muted">satisfaction</p>
-          </div>
-        )}
-      </div>
-
-      {/* Actions */}
-      <div className="mt-4 flex gap-2">
-        <button className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-wiil-border py-2 text-xs font-medium text-wiil-text-secondary transition-all hover:border-wiil-accent hover:text-wiil-accent">
-          <Settings className="h-3.5 w-3.5" />
-          Configure
-        </button>
-        <button className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-wiil-accent py-2 text-xs font-medium text-white transition-all hover:bg-wiil-accent-hover">
-          <Play className="h-3.5 w-3.5" />
-          Test
-        </button>
+      {/* Conversations today */}
+      <div className="mt-4 border-t border-wiil-border pt-3">
+        <p className="text-sm text-wiil-text">
+          <span className="font-semibold">{assistant.conversationsToday}</span>
+          <span className="text-wiil-muted"> conversations today</span>
+        </p>
       </div>
     </div>
   );
@@ -548,8 +453,8 @@ function QuickLink({
   badge?: string;
 }) {
   return (
-    <button className="group flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-colors hover:bg-background">
-      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gray-50 text-wiil-muted transition-colors group-hover:bg-wiil-accent-light group-hover:text-wiil-accent">
+    <button className="group flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-colors hover:bg-wiil-accent-light/50">
+      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-wiil-accent-light text-wiil-accent">
         {icon}
       </div>
       <span className="flex-1 text-sm font-medium text-wiil-text-secondary group-hover:text-wiil-text">
@@ -566,37 +471,12 @@ function QuickLink({
 }
 
 function ActivityIcon({ type }: { type: string }) {
-  const base = "flex h-7 w-7 items-center justify-center rounded-lg";
-  switch (type) {
-    case "order":
-      return (
-        <div className={`${base} bg-blue-50 text-blue-500`}>
-          <ShoppingBag className="h-3.5 w-3.5" />
-        </div>
-      );
-    case "conversation":
-      return (
-        <div className={`${base} bg-wiil-accent-light text-wiil-accent`}>
-          <MessageSquare className="h-3.5 w-3.5" />
-        </div>
-      );
-    case "contact":
-      return (
-        <div className={`${base} bg-purple-50 text-purple-500`}>
-          <UserCheck className="h-3.5 w-3.5" />
-        </div>
-      );
-    case "booking":
-      return (
-        <div className={`${base} bg-green-50 text-green-600`}>
-          <Calendar className="h-3.5 w-3.5" />
-        </div>
-      );
-    default:
-      return (
-        <div className={`${base} bg-gray-50 text-gray-400`}>
-          <BarChart3 className="h-3.5 w-3.5" />
-        </div>
-      );
-  }
+  const base = "flex h-7 w-7 items-center justify-center rounded-lg bg-wiil-accent-light text-wiil-accent";
+  const icons: Record<string, React.ReactNode> = {
+    order: <ShoppingBag className="h-3.5 w-3.5" />,
+    conversation: <MessageSquare className="h-3.5 w-3.5" />,
+    contact: <UserCheck className="h-3.5 w-3.5" />,
+    booking: <Calendar className="h-3.5 w-3.5" />,
+  };
+  return <div className={base}>{icons[type] || <BarChart3 className="h-3.5 w-3.5" />}</div>;
 }
