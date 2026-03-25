@@ -14,14 +14,14 @@ import {
 } from "lucide-react";
 
 const NAV_ITEMS = [
-  { icon: Home, label: "Home", active: true },
-  { icon: LayoutGrid, label: "Agents" },
-  { icon: Users, label: "Contacts" },
-  { icon: MessageSquare, label: "Inbox" },
-  { icon: Calendar, label: "Calendar" },
-  { icon: Package, label: "Products" },
-  { icon: Wrench, label: "Services" },
-  { icon: FileText, label: "Documents" },
+  { icon: Home, label: "Home", href: "/" },
+  { icon: LayoutGrid, label: "Agents", href: "/agents" },
+  { icon: Users, label: "Contacts", href: "/contacts" },
+  { icon: MessageSquare, label: "Inbox", href: "/inbox" },
+  { icon: Calendar, label: "Calendar", href: "/calendar" },
+  { icon: Package, label: "Products", href: "/products" },
+  { icon: Wrench, label: "Services", href: "/services" },
+  { icon: FileText, label: "Documents", href: "/documents" },
 ];
 
 const BOTTOM_ITEMS = [
@@ -29,7 +29,7 @@ const BOTTOM_ITEMS = [
   { icon: Settings, label: "Settings" },
 ];
 
-export function Sidebar() {
+export function Sidebar({ activePath = "/" }: { activePath?: string }) {
   return (
     <aside className="flex w-[52px] flex-col items-center border-r border-wiil-border bg-wiil-sidebar py-4">
       {/* Logo */}
@@ -41,22 +41,23 @@ export function Sidebar() {
       <nav className="flex flex-1 flex-col items-center gap-1">
         {NAV_ITEMS.map((item) => {
           const Icon = item.icon;
+          const isActive = activePath === item.href;
           return (
-            <button
+            <a
               key={item.label}
+              href={item.href}
               title={item.label}
               className={`group relative flex h-9 w-9 items-center justify-center rounded-xl transition-all ${
-                item.active
+                isActive
                   ? "bg-wiil-accent text-white shadow-sm"
                   : "text-wiil-muted hover:bg-wiil-accent-light hover:text-wiil-accent"
               }`}
             >
               <Icon className="h-[18px] w-[18px]" strokeWidth={1.8} />
-              {/* Tooltip */}
               <span className="pointer-events-none absolute left-full ml-2 whitespace-nowrap rounded-md bg-wiil-text px-2.5 py-1 text-xs font-medium text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
                 {item.label}
               </span>
-            </button>
+            </a>
           );
         })}
       </nav>
@@ -79,7 +80,6 @@ export function Sidebar() {
           );
         })}
 
-        {/* User avatar */}
         <div className="mt-3 flex h-8 w-8 items-center justify-center rounded-full bg-wiil-accent text-xs font-semibold text-white">
           SM
         </div>
